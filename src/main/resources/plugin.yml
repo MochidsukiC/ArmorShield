@@ -1,0 +1,4 @@
+name: ArmorShield
+version: '${project.version}'
+main: jp.houlab.mochidsuki.armorshield.Main
+api-version: '1.20'
