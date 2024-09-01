@@ -15,7 +15,7 @@ public final class Main extends JavaPlugin {
         plugin = this;
 
         //Config
-        saveConfig();
+        saveDefaultConfig();
         config = getConfig();
 
         //EveryTicks

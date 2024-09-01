@@ -18,6 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Objects;
 
+import static jp.houlab.mochidsuki.armorshield.Main.config;
 import static jp.houlab.mochidsuki.armorshield.Main.plugin;
 
 public class Listener implements org.bukkit.event.Listener {
@@ -51,9 +52,9 @@ public class Listener implements org.bukkit.event.Listener {
 
             //シールド
             double damage = event.getFinalDamage();
-            if (player.getInventory().getItem(EquipmentSlot.CHEST) != null) {
-                if (player.getInventory().getItem(EquipmentSlot.CHEST).getType() == Material.LEATHER_CHESTPLATE || player.getInventory().getItem(EquipmentSlot.CHEST).getType() == Material.CHAINMAIL_CHESTPLATE || player.getInventory().getItem(EquipmentSlot.CHEST).getType() == Material.IRON_CHESTPLATE || player.getInventory().getItem(EquipmentSlot.CHEST).getType() == Material.GOLDEN_CHESTPLATE || player.getInventory().getItem(EquipmentSlot.CHEST).getType() == Material.DIAMOND_CHESTPLATE || player.getInventory().getItem(EquipmentSlot.CHEST).getType() == Material.NETHERITE_CHESTPLATE) {
-                    ShieldUtil shieldUtil = new ShieldUtil(player.getInventory().getItem(EquipmentSlot.CHEST));
+            if (player.getInventory().getItem(config.getInt("ChestPlateSlot")) != null) {
+                if (player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.LEATHER_CHESTPLATE || player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.CHAINMAIL_CHESTPLATE || player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.IRON_CHESTPLATE || player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.GOLDEN_CHESTPLATE || player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.DIAMOND_CHESTPLATE || player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.NETHERITE_CHESTPLATE) {
+                    ShieldUtil shieldUtil = new ShieldUtil(player.getInventory().getItem(config.getInt("ChestPlateSlot")));
                     if (shieldUtil.getShieldNow() > 0) {
                         int shieldNow;
 
@@ -74,9 +75,9 @@ public class Listener implements org.bukkit.event.Listener {
                         }
                         event.setDamage(damage);
                         double da = (shieldUtil.getShieldMax() - shieldNow) / shieldUtil.getShieldMax() * shieldUtil.getShieldMaxDurability();
-                        Damageable damageable = (Damageable) player.getInventory().getItem(EquipmentSlot.CHEST).getItemMeta();
+                        Damageable damageable = (Damageable) player.getInventory().getItem(config.getInt("ChestPlateSlot")).getItemMeta();
                         damageable.setDamage((int) da);
-                        player.getInventory().getItem(EquipmentSlot.CHEST).setItemMeta(damageable);
+                        player.getInventory().getItem(config.getInt("ChestPlateSlot")).setItemMeta(damageable);
 
                     }
                 }
