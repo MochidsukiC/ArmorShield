@@ -14,8 +14,14 @@ import java.util.Optional;
 
 import static jp.houlab.mochidsuki.armorshield.Main.plugin;
 
-
+/**
+ * 毎秒実行されるクラス
+ * @author Mochidsuki
+ */
 public class EveryTicks extends BukkitRunnable {
+    /**
+     * 実行
+     */
     @Override
     public void run() {
 

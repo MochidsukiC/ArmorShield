@@ -8,14 +8,27 @@ import java.util.Objects;
 
 import static jp.houlab.mochidsuki.armorshield.Main.config;
 
+/**
+ * 与えられたチェストプレートからアーマー状況を算出するユーティリティクラス
+ * @author Mochidsuki
+ */
 public class ShieldUtil {
 
 
     ItemStack chest;
+
+    /**
+     * コンストラクタ
+     * @param itemStack チェストプレート
+     */
     public ShieldUtil(ItemStack itemStack){
         chest = itemStack;
     }
 
+    /**
+     * シールド最大値を取得
+     * @return シールド最大値
+     */
     public double getShieldMax(){
         if(chest != null) {
             switch (Objects.requireNonNull(chest).getType()) {
@@ -35,6 +48,10 @@ public class ShieldUtil {
         }return 0;
     }
 
+    /**
+     * 現在のシールド残量を取得
+     * @return シールド残量
+     */
     public int getShieldNow(){
         if(chest != null && (chest.getItemMeta()) != null) {
             Damageable d = (Damageable) chest.getItemMeta();
@@ -47,6 +64,10 @@ public class ShieldUtil {
         }
     }
 
+    /**
+     * 現在のシールドのUI上での色を取得
+     * @return 色
+     */
     public ChatColor getShieldColor(){
         if(chest != null) {
             switch (Objects.requireNonNull(chest).getType()) {
@@ -67,6 +88,11 @@ public class ShieldUtil {
             return ChatColor.RESET;
         }
     }
+
+    /**
+     * シールドの最大耐久値を取得
+     * @return
+     */
     public double getShieldMaxDurability(){
         if(chest != null) {
             return chest.getType().getMaxDurability();

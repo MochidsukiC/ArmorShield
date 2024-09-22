@@ -16,7 +16,10 @@ import java.util.Collections;
 
 import static jp.houlab.mochidsuki.armorshield.Main.config;
 
-
+/**
+ * プレイヤーの長押しを検知、管理、UI表示、長押し完了後の動作を行う
+ * @author Mochidsuki
+ */
 public class LongPress extends BukkitRunnable {
     double use = 0;
     Player player;
@@ -25,6 +28,14 @@ public class LongPress extends BukkitRunnable {
     double time;
     Player fenixPlayer;
 
+    /**
+     * コンストラクタ
+     * @param p 実行者
+     * @param t 実行タイプ
+     * @param i アイテムの種類
+     * @param ti 実行時間
+     * @param player1 実行先のプレイヤー
+     */
     public LongPress(Player p, String t, Material i,double ti,Player player1){
         player = p;
         type = t;
@@ -33,6 +44,9 @@ public class LongPress extends BukkitRunnable {
         fenixPlayer = player1;
     }
 
+    /**
+     * 実行
+     */
     @Override
     public void run() {
         switch (type) {

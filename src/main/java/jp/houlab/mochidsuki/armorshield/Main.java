@@ -4,11 +4,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * メインクラス
+ */
 public final class Main extends JavaPlugin {
 
     static public Plugin plugin;
     static public FileConfiguration config;
-
+    /**
+     * 起動時の初期化処理
+     */
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -25,14 +30,11 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Listener(),this);
 
     }
-
+    /**
+     * 終了
+     */
     @Override
     public void onDisable() {
         // Plugin shutdown logic
     }
-}
-
-
-class V{
-
 }

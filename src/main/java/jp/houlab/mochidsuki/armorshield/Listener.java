@@ -21,7 +21,15 @@ import java.util.Objects;
 import static jp.houlab.mochidsuki.armorshield.Main.config;
 import static jp.houlab.mochidsuki.armorshield.Main.plugin;
 
+/**
+ * イベントリスナー
+ * @author Mochidsuki
+ */
 public class Listener implements org.bukkit.event.Listener {
+    /**
+     * アーマーがダメージを肩代わりする
+     * @param event イベント
+     */
     @EventHandler
     public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
         Player damager = null;
@@ -85,6 +93,10 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
+    /**
+     * チェストプレートが破壊されないようにする
+     * @param event イベント
+     */
     @EventHandler
     public void PlayerItemBreakEvent(PlayerItemBreakEvent event) {
         if (event.getBrokenItem().getType() == Material.CHAINMAIL_CHESTPLATE || event.getBrokenItem().getType() == Material.IRON_CHESTPLATE || event.getBrokenItem().getType() == Material.GOLDEN_CHESTPLATE || event.getBrokenItem().getType() == Material.DIAMOND_CHESTPLATE || event.getBrokenItem().getType() == Material.NETHERITE_CHESTPLATE) {
@@ -92,14 +104,18 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
+    /**
+     * シールドを回復する
+     * @param event イベント
+     */
     @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             switch (Objects.requireNonNull(event.getMaterial())) {
 
-                case ENDER_PEARL:
+                case ENDER_PEARL://フルチャージャー
                     if (!(event.getPlayer().hasPotionEffect(PotionEffectType.SLOW))) {
-                        if (!(event.getPlayer().getInventory().getItem(EquipmentSlot.CHEST) == null || Objects.equals(event.getPlayer().getInventory().getItem(EquipmentSlot.CHEST), new ItemStack(Material.LEATHER_CHESTPLATE)))) {
+                        if (!(event.getPlayer().getInventory().getItem(EquipmentSlot.CHEST).getType() == Material.AIR || Objects.equals(event.getPlayer().getInventory().getItem(EquipmentSlot.CHEST), new ItemStack(Material.LEATHER_CHESTPLATE)))) {
                             Damageable d = (Damageable) event.getPlayer().getInventory().getItem(EquipmentSlot.CHEST).getItemMeta();
                             if (d.getDamage() != 0) {
                                 new LongPress(event.getPlayer(), "shieldmini", event.getMaterial(), 40, null).runTaskTimer(plugin, 0L, 1L);
@@ -112,9 +128,9 @@ public class Listener implements org.bukkit.event.Listener {
                     }
                     event.setCancelled(true);
                     break;
-                case MUSIC_DISC_5:
+                case MUSIC_DISC_5://ミニチャージャー
                     if (!(event.getPlayer().hasPotionEffect(PotionEffectType.SLOW))) {
-                        if (!(event.getPlayer().getInventory().getItem(EquipmentSlot.CHEST) == null || Objects.equals(event.getPlayer().getInventory().getItem(EquipmentSlot.CHEST), new ItemStack(Material.LEATHER_CHESTPLATE)))) {
+                        if (!(event.getPlayer().getInventory().getItem(EquipmentSlot.CHEST).getType() == Material.AIR || Objects.equals(event.getPlayer().getInventory().getItem(EquipmentSlot.CHEST), new ItemStack(Material.LEATHER_CHESTPLATE)))) {
                             Damageable d = (Damageable) event.getPlayer().getInventory().getItem(EquipmentSlot.CHEST).getItemMeta();
                             if (d.getDamage() != 0) {
                                 new LongPress(event.getPlayer(), "shieldmax", event.getMaterial(), 100, null).runTaskTimer(plugin, 0L, 1L);
