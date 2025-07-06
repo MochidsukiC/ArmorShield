@@ -49,11 +49,19 @@ public class Listener implements org.bukkit.event.Listener {
 
 
             Player player = (Player) event.getEntity();
-            if (event.getDamager().getType() == EntityType.PLAYER || event.getDamager().getType() == EntityType.ARROW) {
-                if (event.getDamager().getType() == EntityType.PLAYER) {
-                    damager = (Player) event.getDamager();
-                } else {
-                    damager = (Player) ((Arrow) event.getDamager()).getShooter();
+            if (event.getDamager().getType() == EntityType.PLAYER || event.getDamager().getType() == EntityType.ARROW || event.getDamager().getType() == EntityType.FIREBALL) {
+                switch (event.getDamager().getType()){
+                    case PLAYER:{
+                        damager = (Player) event.getDamager();
+                        break;
+                    }
+                    case ARROW:{
+                        damager = (Player) ((Arrow) event.getDamager()).getShooter();
+                        break;
+                    }
+                    case FIREBALL:{
+                        damager = (Player) ((Arrow) event.getDamager()).getShooter();
+                    }
                 }
             }
 
