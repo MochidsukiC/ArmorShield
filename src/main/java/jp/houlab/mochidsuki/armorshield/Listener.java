@@ -82,10 +82,7 @@ public class Listener implements org.bukkit.event.Listener {
                             damage = 0;
                         }
                         event.setDamage(damage);
-                        double da = (shieldUtil.getShieldMax() - shieldNow) / shieldUtil.getShieldMax() * shieldUtil.getShieldMaxDurability();
-                        Damageable damageable = (Damageable) player.getInventory().getItem(config.getInt("ChestPlateSlot")).getItemMeta();
-                        damageable.setDamage((int) da);
-                        player.getInventory().getItem(config.getInt("ChestPlateSlot")).setItemMeta(damageable);
+                        shieldUtil.removeShieldNow(shieldNow);
 
                     }
                 }

@@ -64,6 +64,32 @@ public class ShieldUtil {
         }
     }
 
+    public void addShieldNow(int i){
+        if(chest != null && (chest.getItemMeta()) != null) {
+            Damageable damageable = (Damageable) chest.getItemMeta();
+
+            double d = damageable.getDamage() - (i / getShieldMax() * getShieldMaxDurability());
+            if(d<0){
+                d=0;
+            }
+            damageable.setDamage((int) d);
+            chest.setItemMeta(damageable);
+        }
+    }
+
+    public void removeShieldNow(int i){
+        if(chest != null && (chest.getItemMeta()) != null) {
+            Damageable damageable = (Damageable) chest.getItemMeta();
+
+            double d = damageable.getDamage() + (i / getShieldMax() * getShieldMaxDurability());
+            if(d>getShieldMaxDurability()){
+                d=getShieldMaxDurability();
+            }
+            damageable.setDamage((int) d);
+            chest.setItemMeta(damageable);
+        }
+    }
+
     /**
      * 現在のシールドのUI上での色を取得
      * @return 色
