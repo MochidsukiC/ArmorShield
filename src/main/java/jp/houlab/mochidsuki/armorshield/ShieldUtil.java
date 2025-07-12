@@ -77,6 +77,14 @@ public class ShieldUtil {
         }
     }
 
+    public void setShieldNow(int i) {
+        if (chest != null && (chest.getItemMeta()) != null) {
+            Damageable damageable = (Damageable) chest.getItemMeta();
+            damageable.setDamage((int) (getShieldMaxDurability() - ((i / getShieldMax() * getShieldMaxDurability()))));
+            chest.setItemMeta(damageable);
+        }
+    }
+
     public void removeShieldNow(int i){
         if(chest != null && (chest.getItemMeta()) != null) {
             Damageable damageable = (Damageable) chest.getItemMeta();

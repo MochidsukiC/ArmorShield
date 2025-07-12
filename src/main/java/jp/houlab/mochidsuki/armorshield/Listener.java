@@ -1,10 +1,12 @@
 package jp.houlab.mochidsuki.armorshield;
 
+import jp.houlab.mochidsuki.knockdown.scoreCounterAPI.ScoreProfile;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -46,8 +48,6 @@ public class Listener implements org.bukkit.event.Listener {
         }
 
         if (event.getEntity().getType().equals(EntityType.PLAYER)) {
-
-
             Player player = (Player) event.getEntity();
             if (event.getDamager().getType() == EntityType.PLAYER || event.getDamager().getType() == EntityType.ARROW || event.getDamager().getType() == EntityType.FIREBALL) {
                 switch (event.getDamager().getType()){
@@ -56,11 +56,15 @@ public class Listener implements org.bukkit.event.Listener {
                         break;
                     }
                     case ARROW:{
-                        damager = (Player) ((Arrow) event.getDamager()).getShooter();
+                        if(((Arrow) event.getDamager()).getShooter() instanceof Player) {
+                            damager = (Player) ((Arrow) event.getDamager()).getShooter();
+                        }
                         break;
                     }
                     case FIREBALL:{
-                        damager = (Player) ((Arrow) event.getDamager()).getShooter();
+                        if(((Fireball) event.getDamager()).getShooter() instanceof Player) {
+                            damager = (Player) ((Fireball) event.getDamager()).getShooter();
+                        }
                     }
                 }
             }
@@ -71,26 +75,32 @@ public class Listener implements org.bukkit.event.Listener {
             if (player.getInventory().getItem(config.getInt("ChestPlateSlot")) != null) {
                 if (player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.LEATHER_CHESTPLATE || player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.CHAINMAIL_CHESTPLATE || player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.IRON_CHESTPLATE || player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.GOLDEN_CHESTPLATE || player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.DIAMOND_CHESTPLATE || player.getInventory().getItem(config.getInt("ChestPlateSlot")).getType() == Material.NETHERITE_CHESTPLATE) {
                     ShieldUtil shieldUtil = new ShieldUtil(player.getInventory().getItem(config.getInt("ChestPlateSlot")));
-                    if (shieldUtil.getShieldNow() > 0) {
-                        int shieldNow;
+                    int shieldNow = shieldUtil.getShieldNow();
+                    if (shieldNow > 0) {
 
 
-                        shieldNow = shieldUtil.getShieldNow();
-                        if (shieldNow > 0) {
-                            damage = (int) (event.getFinalDamage() - shieldNow);
-                            shieldNow = (int) (shieldNow - event.getFinalDamage());
-                            if (shieldNow <= 0) {
-                                shieldNow = 0;
-                                if (event.getDamager().getType() == EntityType.PLAYER) {
-                                    damager.playSound(damager.getLocation(), Sound.BLOCK_GLASS_BREAK, 100, 0);
-                                }
+                        double d = event.getFinalDamage();
+                        if(d>shieldNow){
+                            d = shieldNow;
+                        }
+                        if(plugin.getServer().getPluginManager().isPluginEnabled("Knockdown") && damager != null && !damager.getUniqueId().equals(player.getUniqueId())){
+                            ScoreProfile.scoreProfiles.get(damager.getUniqueId()).addDamageScore(d);
+                        }
+
+                        damage = (int) (event.getFinalDamage() - shieldNow);
+                        shieldNow = (int) (shieldNow - event.getFinalDamage());
+                        if (shieldNow <= 0) {
+                            shieldNow = 0;
+                            if (damager != null) {
+                                damager.playSound(damager.getLocation(), Sound.BLOCK_GLASS_BREAK, 100, 0);
                             }
                         }
+
                         if (damage <= 0) {
                             damage = 0;
                         }
+                        shieldUtil.setShieldNow(shieldNow);
                         event.setDamage(damage);
-                        shieldUtil.removeShieldNow(shieldNow);
 
                     }
                 }
